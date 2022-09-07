@@ -28,7 +28,7 @@ public class Receipt {
     }
 
     public double total(){
-        return (totalSum - totalDiscount);
+        return Math.ceil(totalSum - totalDiscount);
     }
 
     @Override
