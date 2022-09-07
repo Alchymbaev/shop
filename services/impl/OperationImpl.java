@@ -20,7 +20,8 @@ public class OperationImpl implements Operation {
     Product milk = new Milk("Молоко", 40, Measure.LITER, ProductCategory.DAIRYPRODUCT);
     Product kefir = new Kefir("Кефир", 55.5, Measure.LITER, ProductCategory.DAIRYPRODUCT);
     Product yogurt = new Yogurt("Йогурт", 30.7, Measure.THING, ProductCategory.DAIRYPRODUCT);
-    Product[] products = new Product[] {apple, banana, orange, milk, kefir, yogurt};
+    Product pie = new Pie("Пирог", 190.3, Measure.THING, ProductCategory.DESSERT);
+    Product[] products = new Product[] {apple, banana, orange, milk, kefir, yogurt,pie};
 
     Cashier cashier1 = new Cashier("Алман", "silma");
     Cashier cashier2 = new Cashier("Илим", "kalman");

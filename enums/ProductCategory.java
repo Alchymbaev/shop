@@ -2,7 +2,9 @@ package Lesson19.shop.enums;
 
 public enum ProductCategory {
     DAIRYPRODUCT("Молочка"),
-    FRUIT("Фрукты");
+    FRUIT("Фрукты"),
+
+    DESSERT("Десерты");
 
     private String categoryName;
 
