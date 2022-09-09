@@ -1,10 +1,12 @@
 package Lesson19.shop.models;
 
-import com.sun.org.apache.xpath.internal.operations.Or;
+import java.text.DecimalFormat;
 
 public class Receipt {
     private double totalSum;
     private double totalDiscount;
+
+    private static final DecimalFormat df = new DecimalFormat("0.00");
 
     public Receipt(double totalSum, double totalDiscount) {
         this.totalSum = totalSum;
@@ -27,8 +29,8 @@ public class Receipt {
         this.totalDiscount = totalDiscount;
     }
 
-    public double total(){
-        return Math.ceil(totalSum - totalDiscount);
+    public String total(){
+        return df.format(totalSum - totalDiscount);
     }
 
     @Override

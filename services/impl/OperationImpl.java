@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class OperationImpl implements Operation {
-    private boolean answer;
     Scanner scanner = new Scanner(System.in);
     Product apple = new Apple("Яблоко", 50.5, Measure.KILOGRAMM, ProductCategory.FRUIT);
     Product banana = new Banana("Банан", 98.3, Measure.KILOGRAMM, ProductCategory.FRUIT);
@@ -24,8 +23,6 @@ public class OperationImpl implements Operation {
     Product icecream = new IceCream("Мороженое", 19.3, Measure.THING, ProductCategory.DESSERT);
     Product cake = new Cake("Торт", 800.4, Measure.THING, ProductCategory.DESSERT);
     Product[] products = new Product[] {apple, banana, orange, milk, kefir, yogurt,pie, cake, icecream};
-
-
 
     Cashier cashier1 = new Cashier("Алман", "silma");
     Cashier cashier2 = new Cashier("Илим", "kalman");
@@ -40,13 +37,16 @@ public class OperationImpl implements Operation {
     }
 
     @Override
-    public ProductCategory getCategory(String name) {
+    public ProductCategory getCategory() {
+        System.out.print("Выберите категорию: ");
+        String name = scanner.nextLine();
+        ProductCategory myCategory = null;
         for (ProductCategory category : ProductCategory.values()) {
             if (category.getCategoryName().equals(name)) {
-                return category;
+                myCategory = category;
             }
         }
-        return null;
+        return myCategory;
     }
 
     @Override
@@ -68,13 +68,16 @@ public class OperationImpl implements Operation {
     }
 
     @Override
-    public Product getProductByName(String selectedProduct) {
+    public Product getProductByName() {
+        System.out.print("Выберите продукт: ");
+        String selectedProduct = scanner.nextLine();
+        Product product = null;
         for (Product prd : products) {
             if (prd.getName().equals(selectedProduct)){
-                return prd;
+                product = prd;
             }
         }
-        return null;
+        return product;
     }
 
     @Override
@@ -89,17 +92,24 @@ public class OperationImpl implements Operation {
     }
 
     @Override
-    public Cashier getCashier(String name) {
-        for (Cashier cshr : cashiers) {
-            if (cshr.getName().equals(name)){
-                return cshr;
+    public Cashier getCashier() {
+        printCashiers();
+        System.out.print("Введите имя обслуживающего кассира: ");
+        String selectedCashier = scanner.nextLine();
+        Cashier myCashier = null;
+        for (Cashier chr : cashiers) {
+            if (chr.getName().equals(selectedCashier)){
+                myCashier = chr;
             }
         }
-        System.out.print("Попробуйте ещё раз: ");
-        getCashier(scanner.nextLine());
-        return null;
+        if (myCashier != null) {
+            return myCashier;
+        } else {
+            return getCashier();
+        }
     }
 
+    @Override
     public void printCashiers(){
         System.out.println("Кассиры: ");
         for (int i = 0; i < cashiers.length; i++) {
@@ -107,60 +117,49 @@ public class OperationImpl implements Operation {
         }
     }
 
-
-    public int checkAmount(String str) {
-        if (checkIsNotNull(str) && checkHasSymbol(str) && Integer.parseInt(str) > 0){
+    @Override
+    public int checkAmount() {
+        System.out.print("Количество выбранного продукта: ");
+        String str = scanner.nextLine();
+        if (isNumber(str) && Integer.parseInt(str) > 0){
             return Integer.parseInt(str);
         } else {
-            System.out.print("Количество выбранного продукта: ");
-            checkAmount(scanner.nextLine());
-        }
-        return 1;
-    }
-
-    public double checkDiscount(String str) {
-        if (checkIsNotNull(str) && checkHasSymbol(str)){
-            return Double.parseDouble(str);
-        } else {
-            System.out.print("Скидка на продукт: ");
-            checkDiscount(scanner.nextLine());
-        }
-        return 0;
-    }
-
-    public void checkAnswer(String str) {
-        if (str.equals("да") || str.equals("Да") || str.equals("ДА")) {
-            setAnswer(true);
-        } else if (str.equals("нет") || str.equals("Нет") || str.equals("НЕТ")) {
-            setAnswer(false);
-        } else {
-            System.out.print("Продолжаем? (да или нет): ");
-            checkAnswer(scanner.nextLine());
+            return checkAmount();
         }
     }
 
-    private boolean checkIsNotNull(String string) {
-        if (string.equals("") || string.charAt(0) == ' ') {
-            return  false;
-        } else {
-            return true;
-        }
-    }
-
-    private boolean checkHasSymbol(String string) {
-        if (string.matches(".*[a-z].*") || string.matches(".*[а-я].*")) {
+    private boolean isNumber(String str){
+        if (!str.matches("[0-9]+")){
             return false;
         } else {
             return true;
         }
     }
 
-    private void setAnswer(boolean answer) {
-        this.answer = answer;
+    @Override
+    public double checkDiscount(Product product) {
+        double productPrice = product.getCost();
+        System.out.print("Скидка на продукт: ");
+        String str = scanner.nextLine();
+        try {
+            if (productPrice > Double.parseDouble(str))
+                return Double.parseDouble(str);
+            else return checkDiscount(product);
+        } catch (NumberFormatException e) {
+            return checkDiscount(product);
+        }
     }
 
-    public boolean isAnswer() {
-        return answer;
+    @Override
+    public boolean checkAnswer() {
+        System.out.print("Продолжаем? (да или нет): ");
+        String str = scanner.nextLine();
+        if (str.equals("да") || str.equals("Да") || str.equals("ДА")) {
+            return  true;
+        } else if (str.equals("нет") || str.equals("Нет") || str.equals("НЕТ")) {
+            return false;
+        } else {
+            return checkAnswer();
+        }
     }
-
 }

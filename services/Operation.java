@@ -11,15 +11,23 @@ import java.util.ArrayList;
 public interface Operation {
     void getProductCategory();
 
-    ProductCategory getCategory(String name);
+    ProductCategory getCategory();
 
     ArrayList<Product> getProductByCategory(ProductCategory productCategory);
 
     void printListProductsByCategory(ArrayList<Product> list);
 
-    Product getProductByName(String selectedProduct);
+    Product getProductByName();
 
     Receipt getReceipt(Order order);
 
-    Cashier getCashier(String name);
+    Cashier getCashier();
+
+    boolean checkAnswer();
+
+    double checkDiscount(Product product);
+
+    int checkAmount();
+
+    void printCashiers();
 }

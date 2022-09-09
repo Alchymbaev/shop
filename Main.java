@@ -8,54 +8,39 @@ import Lesson19.shop.models.Receipt;
 import Lesson19.shop.models.products.Product;
 import Lesson19.shop.services.impl.OperationImpl;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         System.out.println("Добро пожаловать!!!");
-        Scanner scanner = new Scanner(System.in);
         OperationImpl operation = new OperationImpl();
         ArrayList<Details> details = new ArrayList<>();
         while (true){
             System.out.println("Выберите категорию продуктов: ");
             operation.getProductCategory();
-            System.out.print("Выберите категорию: ");
-            String category = scanner.nextLine();
-            ProductCategory productCategory = operation.getCategory(category);
+            ProductCategory productCategory = operation.getCategory();
             if (productCategory == null){
                 continue;
             } else {
                 while (true) {
                     System.out.println("Продукты выбранной категории: ");
                     operation.printListProductsByCategory(operation.getProductByCategory(productCategory));
-                    System.out.print("Выберите продукт: ");
-                    String selectedProduct = scanner.nextLine();
-                    Product product = operation.getProductByName(selectedProduct);
+                    Product product = operation.getProductByName();
                     if (product == null) {
                         continue;
                     } else {
-                        System.out.print("Количество выбранного продукта: ");
-                        int counts = operation.checkAmount(scanner.nextLine());
-                        System.out.print("Скидка на продукт: ");
-                        double discountSum = operation.checkDiscount(scanner.nextLine());
+                        int counts = operation.checkAmount();
+                        double discountSum = operation.checkDiscount(product);
                         Details dtl = new Details(product, counts, discountSum);
                         details.add(dtl);
                     }
                     break;
-                }  
+                }
             }
-            System.out.print("Продолжаем? (да или нет): ");
-            operation.checkAnswer(scanner.nextLine());
-            if (operation.isAnswer()) {
-                continue;
-            } else {
+            if (!operation.checkAnswer()) {
                 break;
             }
         }
-        operation.printCashiers();
-        System.out.print("Введите имя обслуживающего кассира: ");
-        String cashier = scanner.nextLine();
-        Cashier myCashier = operation.getCashier(cashier);
+        Cashier myCashier = operation.getCashier();
         Order order = new Order(myCashier, details);
         Receipt receipt = operation.getReceipt(order);
         System.out.println();
