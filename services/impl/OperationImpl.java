@@ -138,13 +138,16 @@ public class OperationImpl implements Operation {
 
     @Override
     public double checkDiscount(Product product) {
-        double productPrice = product.getCost();
         System.out.print("Скидка на продукт: ");
         String str = scanner.nextLine();
         try {
-            if (100 > Double.parseDouble(str))
+            if (Double.parseDouble(str) < 100 && Double.parseDouble(str) > 0)
                 return (product.getCost() * Double.parseDouble(str)) / 100;
-            else return checkDiscount(product);
+            else if (Double.parseDouble(str) == 0){
+                return 0;
+            } else {
+                return checkDiscount(product);
+            }
         } catch (NumberFormatException e) {
             return checkDiscount(product);
         }
