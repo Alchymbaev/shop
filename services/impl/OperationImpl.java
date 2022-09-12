@@ -141,11 +141,9 @@ public class OperationImpl implements Operation {
         System.out.print("Скидка на продукт: ");
         String str = scanner.nextLine();
         try {
-            if (Double.parseDouble(str) < 100 && Double.parseDouble(str) > 0)
+            if (Double.parseDouble(str) < 100 && Double.parseDouble(str) >= 0)
                 return (product.getCost() * Double.parseDouble(str)) / 100;
-            else if (Double.parseDouble(str) == 0){
-                return 0;
-            } else {
+            else {
                 return checkDiscount(product);
             }
         } catch (NumberFormatException e) {
